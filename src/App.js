@@ -5,6 +5,7 @@ import Createrecipe from './Pages/Create-recipe';
 import SavedRecipe from './Pages/SavedRecipe';
 import Login from './Pages/Auth/Login';
 import Register from './Pages/Auth/Register';
+import '@fontsource/roboto/300.css';
 
 
 function App() {

@@ -1,3 +1,3 @@
-export default function UserID(){
-    return window.localStorage.getItem("userID");
+export default function UserID() {
+  return window.localStorage.getItem("userID");
 }
