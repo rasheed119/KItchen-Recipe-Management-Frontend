@@ -55,6 +55,7 @@ function Homepage() {
           "https://kitchen-recipe-backend-nu.vercel.app/recipes"
         );
         setRecipe(response.data.data);
+
       } catch (error) {
         console.log(error);
       }
@@ -89,8 +90,8 @@ function Homepage() {
       console.log(error.message);
     }
   };
-
-  const isSavedRecipes = (id) => savedRecipe.includes(id);
+  console.log(recipe)
+ //  const isSavedRecipes = (id) => savedRecipe.includes(id); 
 
   return (
     <>
@@ -138,7 +139,7 @@ function Homepage() {
                               Cooking Time : {obj.cookingTime} minutes
                             </Typography>
                           </CardContent>
-                          <CardActions>
+
                             <Button
                               size="small"
                               onClick={() => handleOpen(obj)}
@@ -148,11 +149,10 @@ function Homepage() {
                             <Button
                               size="small"
                               onClick={() => saveRecipe(obj._id)}
-                              disabled={isSavedRecipes(obj._id)}
+                              disabled={""}
                             >
-                              {isSavedRecipes(obj._id) ? "Saved" : "Save"}
+                             Save
                             </Button>
-                          </CardActions>
                         </Card>
                       </Grid>
                     </React.Fragment>
