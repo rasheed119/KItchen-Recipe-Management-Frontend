@@ -14,6 +14,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Modal from "@mui/material/Modal";
 import CardActions from "@mui/material/CardActions";
+import UserID from "../Hook/hook";
 
 const style = {
   position: "absolute",
@@ -33,6 +34,7 @@ const style = {
 function Homepage() {
   const [open, setOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [savedRecipe,setsavedRecipes] = useState([]);
 
   const handleOpen = (recipe) => {
     setOpen(true);
@@ -47,6 +49,7 @@ function Homepage() {
   const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
+
     const getData = async () => {
       try {
         const response = await axios.get(
@@ -57,8 +60,37 @@ function Homepage() {
         console.log(error);
       }
     };
+
+    const savedRecipes = async() =>{
+      try {
+        const response = await axios.get(
+          `https://kitchen-recipe-backend-nu.vercel.app/recipes/savedRecipes/ids/${UserID()}`
+        );
+        setsavedRecipes(response.data.SavedRecipes);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    savedRecipes();
     getData();
   }, []);
+
+  const saveRecipe = async (id) => {
+    try {
+      const response = await axios.put(
+        "https://kitchen-recipe-backend-nu.vercel.app/recipes",{
+          recipeID : id,
+          userID : UserID()
+        }
+      );
+      console.log(response);
+      setRecipe(response.data.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const isSavedRecipes = (id) => savedRecipe.includes(id)
 
   return (
     <>
@@ -107,8 +139,19 @@ function Homepage() {
                             </Typography>
                           </CardContent>
                           <CardActions>
-                            <Button size="small" onClick={() => handleOpen(obj)} >Open</Button>
-                            <Button size="small">Save</Button>
+                            <Button
+                              size="small"
+                              onClick={() => handleOpen(obj)}
+                            >
+                              Open
+                            </Button>
+                            <Button
+                              size="small"
+                              onClick={() => saveRecipe(obj._id)}
+                              disabled = {isSavedRecipes(obj._id)}
+                            >
+                              { isSavedRecipes(obj._id) ? "Saved" : "Save" }
+                            </Button>
                           </CardActions>
                         </Card>
                       </Grid>
