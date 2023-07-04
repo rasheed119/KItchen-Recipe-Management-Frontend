@@ -34,7 +34,7 @@ const style = {
 function Homepage() {
   const [open, setOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [savedRecipe,setsavedRecipes] = useState([]);
+  const [savedRecipe, setsavedRecipes] = useState([]);
 
   const handleOpen = (recipe) => {
     setOpen(true);
@@ -49,7 +49,6 @@ function Homepage() {
   const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
-
     const getData = async () => {
       try {
         const response = await axios.get(
@@ -61,7 +60,7 @@ function Homepage() {
       }
     };
 
-    const savedRecipes = async() =>{
+    const savedRecipes = async () => {
       try {
         const response = await axios.get(
           `https://kitchen-recipe-backend-nu.vercel.app/recipes/savedRecipes/ids/${UserID()}`
@@ -70,7 +69,7 @@ function Homepage() {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     savedRecipes();
     getData();
   }, []);
@@ -78,9 +77,10 @@ function Homepage() {
   const saveRecipe = async (id) => {
     try {
       const response = await axios.put(
-        "https://kitchen-recipe-backend-nu.vercel.app/recipes",{
-          recipeID : id,
-          userID : UserID()
+        "https://kitchen-recipe-backend-nu.vercel.app/recipes",
+        {
+          recipeID: id,
+          userID: UserID(),
         }
       );
       console.log(response);
@@ -90,7 +90,7 @@ function Homepage() {
     }
   };
 
-  const isSavedRecipes = (id) => savedRecipe.includes(id)
+  const isSavedRecipes = (id) => savedRecipe.includes(id);
 
   return (
     <>
@@ -148,9 +148,9 @@ function Homepage() {
                             <Button
                               size="small"
                               onClick={() => saveRecipe(obj._id)}
-                              disabled = {isSavedRecipes(obj._id)}
+                              disabled={isSavedRecipes(obj._id)}
                             >
-                              { isSavedRecipes(obj._id) ? "Saved" : "Save" }
+                              {isSavedRecipes(obj._id) ? "Saved" : "Save"}
                             </Button>
                           </CardActions>
                         </Card>
