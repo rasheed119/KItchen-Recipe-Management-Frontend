@@ -13,7 +13,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Modal from "@mui/material/Modal";
-import CardActions from "@mui/material/CardActions";
 import UserID from "../Hook/hook";
 
 const style = {
@@ -55,7 +54,6 @@ function Homepage() {
           "https://kitchen-recipe-backend-nu.vercel.app/recipes"
         );
         setRecipe(response.data.data);
-
       } catch (error) {
         console.log(error);
       }
@@ -90,8 +88,8 @@ function Homepage() {
       console.log(error.message);
     }
   };
-  console.log(recipe)
- //  const isSavedRecipes = (id) => savedRecipe.includes(id); 
+  console.log(recipe);
+  //  const isSavedRecipes = (id) => savedRecipe.includes(id);
 
   return (
     <>
@@ -117,8 +115,8 @@ function Homepage() {
                   spacing={{ xs: 2, md: 3 }}
                   columns={{ xs: 1, sm: 4, md: 12 }}
                 >
-                  {recipe.map((obj, index) => (
-                    <React.Fragment key={index}>
+                  {recipe.map((obj) => (
+                    <React.Fragment key={obj._id}>
                       <Grid item xs={2} sm={4} md={4}>
                         <Card sx={{ maxWidth: 250 }}>
                           <CardMedia
@@ -140,19 +138,16 @@ function Homepage() {
                             </Typography>
                           </CardContent>
 
-                            <Button
-                              size="small"
-                              onClick={() => handleOpen(obj)}
-                            >
-                              Open
-                            </Button>
-                            <Button
-                              size="small"
-                              onClick={() => saveRecipe(obj._id)}
-                              disabled={""}
-                            >
-                             Save
-                            </Button>
+                          <Button size="small" onClick={() => handleOpen(obj)}>
+                            Open
+                          </Button>
+                          <Button
+                            size="small"
+                            onClick={() => saveRecipe(obj._id)}
+                            disabled={""}
+                          >
+                            Save
+                          </Button>
                         </Card>
                       </Grid>
                     </React.Fragment>
@@ -242,6 +237,9 @@ function Homepage() {
                     </Box>
                   ))}
                 </ul>
+              </Box>
+              <Box sx={{ display : 'flex',alignItems : 'center',justifyContent:'center' }} >
+                <Button onClick={handleClose} color="error" variant="outlined" >Close</Button>
               </Box>
             </>
           )}
