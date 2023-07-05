@@ -34,7 +34,6 @@ function SavedRecipes() {
   const [open, setOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-
   const handleOpen = (recipe) => {
     setOpen(true);
     setSelectedRecipe(recipe);
@@ -48,23 +47,18 @@ function SavedRecipes() {
   const [savedrecipe, setsavedRecipe] = useState([]);
 
   useEffect(() => {
-
-
     const savedRecipes = async () => {
       try {
         const response = await axios.get(
           `https://kitchen-recipe-backend-nu.vercel.app/recipes/savedRecipes/${UserID()}`
         );
         setsavedRecipe(response.data.recipe);
-
       } catch (error) {
         console.log(error);
       }
     };
     savedRecipes();
-
   }, []);
-
 
   return (
     <>
