@@ -54,6 +54,7 @@ function Homepage() {
           "https://kitchen-recipe-backend-nu.vercel.app/recipes"
         );
         setRecipe(response.data.data);
+
       } catch (error) {
         console.log(error);
       }
@@ -65,6 +66,7 @@ function Homepage() {
           `https://kitchen-recipe-backend-nu.vercel.app/recipes/savedRecipes/ids/${UserID()}`
         );
         setsavedRecipes(response.data.SavedRecipes);
+
       } catch (error) {
         console.log(error);
       }
@@ -82,14 +84,12 @@ function Homepage() {
           userID: UserID(),
         }
       );
-      console.log(response);
-      setRecipe(response.data.data);
+      setsavedRecipes(response.data.SavedRecipes);
     } catch (error) {
       console.log(error.message);
     }
   };
-  console.log(recipe);
-  //  const isSavedRecipes = (id) => savedRecipe.includes(id);
+   const isSavedRecipes = (id) => savedRecipe?.includes(id);
 
   return (
     <>
@@ -144,9 +144,9 @@ function Homepage() {
                           <Button
                             size="small"
                             onClick={() => saveRecipe(obj._id)}
-                            disabled={""}
+                            disabled={isSavedRecipes(obj._id)}
                           >
-                            Save
+                            { isSavedRecipes(obj._id) ? "Saved" : "Save" }
                           </Button>
                         </Card>
                       </Grid>
@@ -238,8 +238,16 @@ function Homepage() {
                   ))}
                 </ul>
               </Box>
-              <Box sx={{ display : 'flex',alignItems : 'center',justifyContent:'center' }} >
-                <Button onClick={handleClose} color="error" variant="outlined" >Close</Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button onClick={handleClose} color="error" variant="outlined">
+                  Close
+                </Button>
               </Box>
             </>
           )}
