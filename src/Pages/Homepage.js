@@ -33,7 +33,7 @@ const style = {
 function Homepage() {
   const [open, setOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [savedRecipe, setsavedRecipes] = useState([]);
+  const [savedRecipe, setsavedRecipe] = useState([]);
 
   const handleOpen = (recipe) => {
     setOpen(true);
@@ -65,7 +65,7 @@ function Homepage() {
         const response = await axios.get(
           `https://kitchen-recipe-backend-nu.vercel.app/recipes/savedRecipes/ids/${UserID()}`
         );
-        setsavedRecipes(response.data.SavedRecipes);
+        setsavedRecipe(response.data.SavedRecipes);
 
       } catch (error) {
         console.log(error);
@@ -84,9 +84,10 @@ function Homepage() {
           userID: UserID(),
         }
       );
-      setsavedRecipes(response.data.SavedRecipes);
+      setsavedRecipe(response.data.SavedRecipes);
     } catch (error) {
       console.log(error.message);
+      alert("Please Login to Save Recipe");
     }
   };
    const isSavedRecipes = (id) => savedRecipe?.includes(id);
