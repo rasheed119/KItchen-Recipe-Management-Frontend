@@ -92,7 +92,6 @@ function Homepage() {
 
   const saveRecipe = async (id) => {
     if (UserID()) {
-      setshow(true);
       try {
         const response = await axios.put(
           "https://kitchen-recipe-backend-nu.vercel.app/recipes",
@@ -101,6 +100,7 @@ function Homepage() {
             userID: UserID(),
           }
         );
+        setshow(true);
         setsavedRecipe(response.data.SavedRecipes);
       } catch (error) {
         console.log(error.message);
