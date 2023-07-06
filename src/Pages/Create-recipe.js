@@ -15,6 +15,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UserID from "../Hook/hook";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
 
 function Createrecipe() {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
@@ -92,10 +95,9 @@ function Createrecipe() {
           "https://kitchen-recipe-backend-nu.vercel.app/recipes",
           recipe
         );
-        alert("Recipe is successfully added");
+        alert("Recipe is added Successfully");
         navigate("/");
       } catch (error) {
-        alert("Please Fill all fields");
         console.log(error.message);
         setshow(true);
       }
@@ -121,7 +123,8 @@ function Createrecipe() {
           }}
         >
           <CssBaseline />
-
+          
+          
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <OutdoorGrillTwoToneIcon />
             <Typography variant="h5" component="h1">
@@ -130,7 +133,8 @@ function Createrecipe() {
             <OutdoorGrillTwoToneIcon />
           </Box>
 
-          <Box
+          { UserID() ?
+          (<Box
             component="form"
             onSubmit={(e) => handlesubmit(e)}
             sx={{ mt: 3, display: "flex", flexDirection: "column" }}
@@ -276,7 +280,17 @@ function Createrecipe() {
                 <CircularProgress />
               </Box>
             )}
-          </Box>
+          </Box>):
+          (
+            <Stack sx={{ width: "100%", mt:2, mb :2 }} spacing={2}>
+            <Alert severity="error">
+              <AlertTitle>Info</AlertTitle>
+              You are Not Logged In —{" "}
+              <strong>Log in to See the Create Recipes</strong>
+            </Alert>
+          </Stack>
+          )
+          }
         </Box>
       </Container>
     </>
