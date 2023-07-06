@@ -286,7 +286,7 @@ function Createrecipe() {
             <Alert severity="error">
               <AlertTitle>Info</AlertTitle>
               You are Not Logged In —{" "}
-              <strong>Log in to See the Create Recipes</strong>
+              <strong>Log in to Create Recipes</strong>
             </Alert>
           </Stack>
           )
