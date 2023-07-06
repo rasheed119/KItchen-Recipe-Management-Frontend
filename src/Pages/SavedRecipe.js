@@ -14,6 +14,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Modal from "@mui/material/Modal";
 import UserID from "../Hook/hook";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
 
 const style = {
   position: "absolute",
@@ -84,36 +87,60 @@ function SavedRecipes() {
                   spacing={{ xs: 2, md: 3 }}
                   columns={{ xs: 1, sm: 4, md: 12 }}
                 >
-                  {savedrecipe.map((obj) => (
-                    <React.Fragment key={obj._id}>
-                      <Grid item xs={2} sm={4} md={4}>
-                        <Card sx={{ maxWidth: 250 }}>
-                          <CardMedia
-                            sx={{ height: 120, cursor: "pointer" }}
-                            image={obj.imageUrl}
-                            title={obj.name}
-                            onClick={() => handleOpen(obj)}
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h6"
-                              component="div"
-                            >
-                              {obj.name}
-                            </Typography>
-                            <Typography sx={{ opacity: 0.75 }}>
-                              Cooking Time : {obj.cookingTime} minutes
-                            </Typography>
-                          </CardContent>
+                  {UserID() ? (
+                    savedrecipe && savedrecipe.length === 0 ? (
+                      <Stack sx={{ width: "100%" }} spacing={2}>
+                        <Alert severity="info">
+                          <AlertTitle>Info</AlertTitle>
+                          No recipes Found —{" "}
+                          <strong>Save Recipes to See Here !</strong>
+                        </Alert>
+                      </Stack>
+                    ) : (
+                      savedrecipe &&
+                      savedrecipe.map((obj) => (
+                        <React.Fragment key={obj._id}>
+                          <Grid item xs={2} sm={4} md={4}>
+                            <Card sx={{ maxWidth: 250 }}>
+                              <CardMedia
+                                sx={{ height: 120, cursor: "pointer" }}
+                                image={obj.imageUrl}
+                                title={obj.name}
+                                onClick={() => handleOpen(obj)}
+                              />
+                              <CardContent>
+                                <Typography
+                                  gutterBottom
+                                  variant="h6"
+                                  component="div"
+                                >
+                                  {obj.name}
+                                </Typography>
+                                <Typography sx={{ opacity: 0.75 }}>
+                                  Cooking Time : {obj.cookingTime} minutes
+                                </Typography>
+                              </CardContent>
 
-                          <Button size="small" onClick={() => handleOpen(obj)}>
-                            Open
-                          </Button>
-                        </Card>
-                      </Grid>
-                    </React.Fragment>
-                  ))}
+                              <Button
+                                size="small"
+                                onClick={() => handleOpen(obj)}
+                              >
+                                Open
+                              </Button>
+                            </Card>
+                          </Grid>
+                        </React.Fragment>
+                      ))
+                    )
+                  ) : (
+                    <Stack sx={{ width: "100%" }} spacing={2}>
+                      <Alert severity="error">
+                        <AlertTitle>Info</AlertTitle>
+                        You are Not Logged In —{" "}
+                        <strong>Log in to See the Saved Recipes</strong>
+                      </Alert>
+                    </Stack>
+                  )}
                 </Grid>
               </Box>
             </Container>

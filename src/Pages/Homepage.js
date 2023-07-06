@@ -14,6 +14,14 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Modal from "@mui/material/Modal";
 import UserID from "../Hook/hook";
+import Loading from "../Components/Loading ";
+import Snackbar from "@mui/material/Snackbar";
+import Slide from "@mui/material/Slide";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const style = {
   position: "absolute",
@@ -34,6 +42,7 @@ function Homepage() {
   const [open, setOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [savedRecipe, setsavedRecipe] = useState([]);
+  const [show, setshow] = useState(false);
 
   const handleOpen = (recipe) => {
     setOpen(true);
@@ -45,6 +54,14 @@ function Homepage() {
     setSelectedRecipe(null);
   };
 
+  const handleClickClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setshow(false);
+  };
+
   const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
@@ -54,7 +71,6 @@ function Homepage() {
           "https://kitchen-recipe-backend-nu.vercel.app/recipes"
         );
         setRecipe(response.data.data);
-
       } catch (error) {
         console.log(error);
       }
@@ -66,7 +82,6 @@ function Homepage() {
           `https://kitchen-recipe-backend-nu.vercel.app/recipes/savedRecipes/ids/${UserID()}`
         );
         setsavedRecipe(response.data.SavedRecipes);
-
       } catch (error) {
         console.log(error);
       }
@@ -76,21 +91,25 @@ function Homepage() {
   }, []);
 
   const saveRecipe = async (id) => {
-    try {
-      const response = await axios.put(
-        "https://kitchen-recipe-backend-nu.vercel.app/recipes",
-        {
-          recipeID: id,
-          userID: UserID(),
-        }
-      );
-      setsavedRecipe(response.data.SavedRecipes);
-    } catch (error) {
-      console.log(error.message);
-      alert("Please Login to Save Recipe");
+    if (UserID()) {
+      setshow(true);
+      try {
+        const response = await axios.put(
+          "https://kitchen-recipe-backend-nu.vercel.app/recipes",
+          {
+            recipeID: id,
+            userID: UserID(),
+          }
+        );
+        setsavedRecipe(response.data.SavedRecipes);
+      } catch (error) {
+        console.log(error.message);
+      }
+    } else {
+      alert("Login to Save Recipes");
     }
   };
-   const isSavedRecipes = (id) => savedRecipe?.includes(id);
+  const isSavedRecipes = (id) => savedRecipe?.includes(id);
 
   return (
     <>
@@ -116,43 +135,59 @@ function Homepage() {
                   spacing={{ xs: 2, md: 3 }}
                   columns={{ xs: 1, sm: 4, md: 12 }}
                 >
-                  {recipe.map((obj) => (
-                    <React.Fragment key={obj._id}>
-                      <Grid item xs={2} sm={4} md={4}>
-                        <Card sx={{ maxWidth: 250 }}>
-                          <CardMedia
-                            sx={{ height: 120, cursor: "pointer" }}
-                            image={obj.imageUrl}
-                            title={obj.name}
-                            onClick={() => handleOpen(obj)}
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h6"
-                              component="div"
-                            >
-                              {obj.name}
-                            </Typography>
-                            <Typography sx={{ opacity: 0.75 }}>
-                              Cooking Time : {obj.cookingTime} minutes
-                            </Typography>
-                          </CardContent>
+                  {recipe && recipe.length === 0 ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Loading />
+                    </Box>
+                  ) : (
+                    recipe &&
+                    recipe.map((obj) => (
+                      <React.Fragment key={obj._id}>
+                        <Grid item xs={2} sm={4} md={4}>
+                          <Card sx={{ maxWidth: 250 }}>
+                            <CardMedia
+                              sx={{ height: 120, cursor: "pointer" }}
+                              image={obj.imageUrl}
+                              title={obj.name}
+                              onClick={() => handleOpen(obj)}
+                            />
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h6"
+                                component="div"
+                              >
+                                {obj.name}
+                              </Typography>
+                              <Typography sx={{ opacity: 0.75 }}>
+                                Cooking Time : {obj.cookingTime} minutes
+                              </Typography>
+                            </CardContent>
 
-                          <Button size="small" onClick={() => handleOpen(obj)}>
-                            Open
-                          </Button>
-                          <Button
-                            size="small"
-                            onClick={() => saveRecipe(obj._id)}
-                            disabled={isSavedRecipes(obj._id)}
-                          >
-                            { isSavedRecipes(obj._id) ? "Saved" : "Save" }
-                          </Button>
-                        </Card>
-                      </Grid>
-                    </React.Fragment>
-                  ))}
+                            <Button
+                              size="small"
+                              onClick={() => handleOpen(obj)}
+                            >
+                              Open
+                            </Button>
+                            <Button
+                              size="small"
+                              onClick={() => saveRecipe(obj._id)}
+                              disabled={isSavedRecipes(obj._id)}
+                            >
+                              {isSavedRecipes(obj._id) ? "Saved" : "Save"}
+                            </Button>
+                          </Card>
+                        </Grid>
+                      </React.Fragment>
+                    ))
+                  )}
                 </Grid>
               </Box>
             </Container>
@@ -254,6 +289,21 @@ function Homepage() {
           )}
         </Box>
       </Modal>
+      <Snackbar
+        open={show}
+        autoHideDuration={6000}
+        TransitionComponent={Slide}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        onClose={handleClickClose}
+      >
+        <Alert
+          onClose={handleClickClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Recipe Saved Successfully !
+        </Alert>
+      </Snackbar>
     </>
   );
 }
