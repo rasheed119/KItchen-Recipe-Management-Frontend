@@ -123,8 +123,7 @@ function Createrecipe() {
           }}
         >
           <CssBaseline />
-          
-          
+
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <OutdoorGrillTwoToneIcon />
             <Typography variant="h5" component="h1">
@@ -133,164 +132,165 @@ function Createrecipe() {
             <OutdoorGrillTwoToneIcon />
           </Box>
 
-          { UserID() ?
-          (<Box
-            component="form"
-            onSubmit={(e) => handlesubmit(e)}
-            sx={{ mt: 3, display: "flex", flexDirection: "column" }}
-          >
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <label htmlFor="name">Name : </label>
-              <Input
-                placeholder="Recipe Name"
-                name="name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                color="primary"
-                sx={{ width: 250 }}
-                onChange={(event) => handleChange(event)}
-              />
-            </Box>
+          {UserID() ? (
+            <Box
+              component="form"
+              onSubmit={(e) => handlesubmit(e)}
+              sx={{ mt: 3, display: "flex", flexDirection: "column" }}
+            >
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <label htmlFor="name">Name : </label>
+                <Input
+                  placeholder="Recipe Name"
+                  name="name"
+                  type="text"
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  sx={{ width: 250 }}
+                  onChange={(event) => handleChange(event)}
+                />
+              </Box>
 
-            <Box sx={{ mt: 2, mb: 2, display: "flex", alignItems: "center" }}>
-              <label htmlFor="description">Description : </label>
-              <TextareaAutosize
-                minRows={3}
-                placeholder="Description about the recipe ...."
-                name="description"
-                style={{ borderRadius: 3, padding: 10, width: 250 }}
-                inputProps={{ maxLength: 2 }}
-                onChange={(event) => handleChange(event)}
-              />
-            </Box>
+              <Box sx={{ mt: 2, mb: 2, display: "flex", alignItems: "center" }}>
+                <label htmlFor="description">Description : </label>
+                <TextareaAutosize
+                  minRows={3}
+                  placeholder="Description about the recipe ...."
+                  name="description"
+                  style={{ borderRadius: 3, padding: 10, width: 250 }}
+                  inputProps={{ maxLength: 2 }}
+                  onChange={(event) => handleChange(event)}
+                />
+              </Box>
 
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <label htmlFor="ingredients">Ingredients : </label>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                {recipe.ingredients.map((event, index) => (
-                  <Box key={index}>
-                    <Input
-                      value={event}
-                      placeholder="Add Ingredients"
-                      name="ingredients"
-                      type="text"
-                      fullWidth
-                      variant="outlined"
-                      color="primary"
-                      sx={{ width: 250, mt: 2, mb: 2 }}
-                      onChange={(event) => handleingredientchange(event, index)}
-                    />
-                    <ClearIcon
-                      onClick={() => handleingredientdelete(index)}
-                      sx={{ cursor: "pointer" }}
-                    />
-                  </Box>
-                ))}
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <label htmlFor="ingredients">Ingredients : </label>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {recipe.ingredients.map((event, index) => (
+                    <Box key={index}>
+                      <Input
+                        value={event}
+                        placeholder="Add Ingredients"
+                        name="ingredients"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        color="primary"
+                        sx={{ width: 250, mt: 2, mb: 2 }}
+                        onChange={(event) =>
+                          handleingredientchange(event, index)
+                        }
+                      />
+                      <ClearIcon
+                        onClick={() => handleingredientdelete(index)}
+                        sx={{ cursor: "pointer" }}
+                      />
+                    </Box>
+                  ))}
 
-                <Button
-                  variant="contained"
-                  type="button"
-                  onClick={addingredients}
-                >
-                  Add Ingredients
+                  <Button
+                    variant="contained"
+                    type="button"
+                    onClick={addingredients}
+                  >
+                    Add Ingredients
+                  </Button>
+                </Box>
+              </Box>
+
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <label htmlFor="instructions">Instructions : </label>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {recipe.instructions.map((event, index) => (
+                    <Box key={index}>
+                      <Input
+                        value={event}
+                        placeholder="Add instructions"
+                        name="instructions"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        color="primary"
+                        sx={{ width: 250, mt: 2, mb: 2 }}
+                        onChange={(event) =>
+                          handleinstructionschange(event, index)
+                        }
+                      />
+                      <ClearIcon
+                        onClick={() => handleinstructionsdelete(index)}
+                        sx={{ cursor: "pointer" }}
+                      />
+                    </Box>
+                  ))}
+
+                  <Button
+                    variant="contained"
+                    type="button"
+                    onClick={addinstructions}
+                  >
+                    Add Instructions
+                  </Button>
+                </Box>
+              </Box>
+
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <label htmlFor="imageUrl">Image URL : </label>
+
+                <Input
+                  placeholder="Image URL"
+                  name="imageUrl"
+                  type="text"
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  sx={{ width: 250 }}
+                  onChange={(event) => handleChange(event)}
+                />
+              </Box>
+
+              <Box>
+                <label htmlFor="cookingTime">Cooking Time : </label>
+
+                <Input
+                  placeholder="Cooking TIme"
+                  name="cookingTime"
+                  type="number"
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  sx={{ width: 250 }}
+                  onChange={(event) => handleChange(event)}
+                />
+              </Box>
+
+              {show ? (
+                <Button variant="contained" type="submit" sx={{ mt: 2, mb: 2 }}>
+                  Create Recipe
                 </Button>
-              </Box>
-            </Box>
-
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <label htmlFor="instructions">Instructions : </label>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                {recipe.instructions.map((event, index) => (
-                  <Box key={index}>
-                    <Input
-                      value={event}
-                      placeholder="Add instructions"
-                      name="instructions"
-                      type="text"
-                      fullWidth
-                      variant="outlined"
-                      color="primary"
-                      sx={{ width: 250, mt: 2, mb: 2 }}
-                      onChange={(event) =>
-                        handleinstructionschange(event, index)
-                      }
-                    />
-                    <ClearIcon
-                      onClick={() => handleinstructionsdelete(index)}
-                      sx={{ cursor: "pointer" }}
-                    />
-                  </Box>
-                ))}
-
-                <Button
-                  variant="contained"
-                  type="button"
-                  onClick={addinstructions}
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mt: 2,
+                    mb: 2,
+                  }}
                 >
-                  Add Instructions
-                </Button>
-              </Box>
+                  <CircularProgress />
+                </Box>
+              )}
             </Box>
-
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <label htmlFor="imageUrl">Image URL : </label>
-
-              <Input
-                placeholder="Image URL"
-                name="imageUrl"
-                type="text"
-                fullWidth
-                variant="outlined"
-                color="primary"
-                sx={{ width: 250 }}
-                onChange={(event) => handleChange(event)}
-              />
-            </Box>
-
-            <Box>
-              <label htmlFor="cookingTime">Cooking Time : </label>
-
-              <Input
-                placeholder="Cooking TIme"
-                name="cookingTime"
-                type="number"
-                fullWidth
-                variant="outlined"
-                color="primary"
-                sx={{ width: 250 }}
-                onChange={(event) => handleChange(event)}
-              />
-            </Box>
-
-            {show ? (
-              <Button variant="contained" type="submit" sx={{ mt: 2, mb: 2 }}>
-                Create Recipe
-              </Button>
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  mt: 2,
-                  mb: 2,
-                }}
-              >
-                <CircularProgress />
-              </Box>
-            )}
-          </Box>):
-          (
-            <Stack sx={{ width: "100%", mt:2, mb :2 }} spacing={2}>
-            <Alert severity="error">
-              <AlertTitle>Info</AlertTitle>
-              You are Not Logged In —{" "}
-              <strong>Log in to Create Recipes</strong>
-            </Alert>
-          </Stack>
-          )
-          }
+          ) : (
+            <Stack sx={{ width: "100%", mt: 2, mb: 2 }} spacing={2}>
+              <Alert severity="error">
+                <AlertTitle>Info</AlertTitle>
+                You are Not Logged In —{" "}
+                <strong>Log in to Create Recipes</strong>
+              </Alert>
+            </Stack>
+          )}
         </Box>
       </Container>
     </>
